@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.metrics import confusion_matrix
-from cm import report
+from cm import generate_report
 
 
 def load_data():
@@ -13,10 +13,10 @@ def load_data():
     return cm, target_names
 
 
-def generate_report():
+def report(report_filepath):
     cm, target_names = load_data()
-    report(cm, target_names)
+    generate_report(cm, target_names, report_filepath)
 
 
 if __name__ == '__main__':
-    generate_report()
+    report('test.html')

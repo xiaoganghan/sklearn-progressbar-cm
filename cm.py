@@ -2,7 +2,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 
 
-def report(cm, target_names):
+def generate_data(cm, target_names):
     cm_graph_rows = []
     for label, scores in zip(target_names, cm.tolist()):
         total_score = float(sum(scores))
@@ -14,6 +14,11 @@ def report(cm, target_names):
         'header_line': [''] + target_names,
         'rows': cm_graph_rows
     }
+    return cm_graph
+
+
+def generate_report(cm, target_names, report_filepath='cm.html'):
+    cm_graph = generate_data(cm, target_names)
 
     data_dict = {
         'cm_graph': cm_graph
@@ -22,9 +27,6 @@ def report(cm, target_names):
     env = Environment(loader=FileSystemLoader(current_dir))
     template = env.get_template('cm_tmpl.html')
     output_from_parsed_template = template.render(**data_dict)
-
-    report_filename = 'cm.html'
-    report_filepath = os.path.join(current_dir, report_filename)
 
     with open(report_filepath, "wb") as fh:
         fh.write(output_from_parsed_template.encode('u8'))
